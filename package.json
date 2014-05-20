@@ -1,0 +1,23 @@
+{
+  "name": "tsapi",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.0.2",
+    "debug": "~0.7.4",
+    "express": "^4.2.0",
+    "express-jwt": "^0.2.1",
+    "lodash": "^2.4.1",
+    "moment": "^2.6.0",
+    "mongoose": "^3.8.9",
+    "mongoose-ts": "git://github.com/jensoleg/mongoose-timeseries"
+  },
+  "description": "time series db api",
+  "main": "app.js",
+  "devDependencies": {},
+  "author": "Jens-Ole Graulund <jensole@graulund.net>",
+  "license": "ISC"
+}

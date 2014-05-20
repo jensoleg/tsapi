@@ -1,0 +1,11 @@
+{
+    "port" : 8081,
+    "mongoose": {
+        "db": "mongodb://localhost/mydb",
+        "verbose": false
+    },
+    "auth0": {
+        "clientSecret": "<client secret>",
+        "clientId": "client id"
+    }
+}
