@@ -10,7 +10,7 @@ var config = require('./config.json');
 
 var port = process.env.PORT || config.port || 8080; 		// set our port
 
-mongoose.connect(config.mongoose.db);
+mongoose.connect(config.mongoose.dbURI + config.mongoose.db);
 
 var formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'};
 var intervals = ['1', '60', '3600'];
@@ -104,7 +104,7 @@ router.route('/api/:device/:sensor', authenticate)
         _request.format = 'hash';
 
         //var mti = new MTI(req.params.device + '-' + req.params.sensor, {interval: 1});
-        var mti = new MTI('mycols', {interval: 1, verbose: config.mongoose.verbose});
+        var mti = new MTI('readings', {interval: 1, verbose: config.mongoose.verbose});
         mti.findData(_request,
             function (error, data) {
                 if (error)console.log(error);
