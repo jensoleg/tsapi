@@ -6,7 +6,7 @@
         "verbose": false
     },
     "auth0": {
-        "clientSecret": <clientSecret>,
-        "clientId": <clientId>
+        "clientSecret": " ",
+        "clientId": " "
     }
 }
