@@ -2,43 +2,6 @@
   "name": "tsapi",
   "version": "0.0.1",
   "dependencies": {
-    "body-parser": {
-      "version": "1.2.0",
-      "from": "body-parser@1.2.0",
-      "resolved": "https://registry.npmjs.org/body-parser/-/body-parser-1.2.0.tgz",
-      "dependencies": {
-        "bytes": {
-          "version": "1.0.0",
-          "from": "bytes@1.0.0",
-          "resolved": "https://registry.npmjs.org/bytes/-/bytes-1.0.0.tgz"
-        },
-        "type-is": {
-          "version": "1.2.0",
-          "from": "type-is@1.2.0",
-          "resolved": "https://registry.npmjs.org/type-is/-/type-is-1.2.0.tgz",
-          "dependencies": {
-            "mime": {
-              "version": "1.2.11",
-              "from": "mime@1.2.11"
-            }
-          }
-        },
-        "raw-body": {
-          "version": "1.1.4",
-          "from": "raw-body@1.1.4",
-          "dependencies": {
-            "bytes": {
-              "version": "0.3.0",
-              "from": "bytes@~0.3.0"
-            }
-          }
-        },
-        "qs": {
-          "version": "0.6.6",
-          "from": "qs@0.6.6"
-        }
-      }
-    },
     "debug": {
       "version": "0.7.4",
       "from": "debug@0.7.4"
@@ -250,6 +213,58 @@
         "underscore": {
           "version": "1.6.0",
           "from": "underscore@*"
+        }
+      }
+    },
+    "mqtt": {
+      "version": "0.3.8",
+      "from": "mqtt@",
+      "dependencies": {
+        "readable-stream": {
+          "version": "1.0.27-1",
+          "from": "readable-stream@~1.0.2",
+          "dependencies": {
+            "core-util-is": {
+              "version": "1.0.1",
+              "from": "core-util-is@~1.0.0"
+            },
+            "isarray": {
+              "version": "0.0.1",
+              "from": "isarray@0.0.1"
+            },
+            "string_decoder": {
+              "version": "0.10.25-1",
+              "from": "string_decoder@~0.10.x"
+            },
+            "inherits": {
+              "version": "2.0.1",
+              "from": "inherits@~2.0.1"
+            }
+          }
+        },
+        "bops": {
+          "version": "0.1.1",
+          "from": "bops@~0.1.1",
+          "dependencies": {
+            "base64-js": {
+              "version": "0.0.2",
+              "from": "base64-js@0.0.2"
+            },
+            "to-utf8": {
+              "version": "0.0.1",
+              "from": "to-utf8@0.0.1"
+            }
+          }
+        }
+      }
+    },
+    "raw-body": {
+      "version": "1.1.5",
+      "from": "raw-body@",
+      "dependencies": {
+        "bytes": {
+          "version": "1.0.0",
+          "from": "bytes@1"
         }
       }
     }
