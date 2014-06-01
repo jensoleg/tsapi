@@ -1,12 +1,12 @@
 {
-    "port" : 8081,
+    "port": 8081,
     "mongoose": {
         "dbURI": "mongodb://localhost/",
         "db": "mqtt",
-        "verbose": false
+        "verbose": true
     },
     "auth0": {
-        "clientSecret": " ",
-        "clientId": " "
+        "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",
+        "clientId": "riQAyvtyyRBNvO9zhRsQAXMEtaQA02uW"
     }
 }

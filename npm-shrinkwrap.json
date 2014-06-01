@@ -133,6 +133,23 @@
         }
       }
     },
+    "helmet": {
+      "version": "0.2.1",
+      "from": "helmet@",
+      "resolved": "https://registry.npmjs.org/helmet/-/helmet-0.2.1.tgz",
+      "dependencies": {
+        "platform": {
+          "version": "1.0.0",
+          "from": "platform@1.0.x",
+          "resolved": "https://registry.npmjs.org/platform/-/platform-1.0.0.tgz"
+        },
+        "underscore": {
+          "version": "1.6.0",
+          "from": "underscore@1.6.x",
+          "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
+        }
+      }
+    },
     "lodash": {
       "version": "2.4.1",
       "from": "lodash@"
@@ -217,8 +234,9 @@
       }
     },
     "mqtt": {
-      "version": "0.3.8",
-      "from": "mqtt@",
+      "version": "0.3.9",
+      "from": "mqtt@0.3.9",
+      "resolved": "https://registry.npmjs.org/mqtt/-/mqtt-0.3.9.tgz",
       "dependencies": {
         "readable-stream": {
           "version": "1.0.27-1",

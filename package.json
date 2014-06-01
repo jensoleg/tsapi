@@ -9,6 +9,7 @@
     "debug": "~0.7.4",
     "express": "^4.2.0",
     "express-jwt": "^0.2.1",
+    "helmet": "^0.2.1",
     "lodash": "^2.4.1",
     "moment": "^2.6.0",
     "mongoose": "^3.8.9",
@@ -16,7 +17,7 @@
     "mqtt": "^0.3.8",
     "raw-body": "^1.1.5"
   },
-  "description": "time series db api",
+  "description": "HTTP Time series mongodb api and MQTT bridge",
   "main": "app.js",
   "devDependencies": {},
   "author": "Jens-Ole Graulund <jensole@graulund.net>",
