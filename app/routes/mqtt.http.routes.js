@@ -59,7 +59,7 @@ router.route('/')
                 next();
             });
         setTimeout(function () {
-            if (!retained_message)
+            if (!retained_message) {
                 res.json({
                     "status": "success",
                     "data": {
@@ -68,7 +68,8 @@ router.route('/')
                     },
                     "message": 'Topic not available'
                 });
-            next();
+                next();
+            }
         }, 300);
     })
 
