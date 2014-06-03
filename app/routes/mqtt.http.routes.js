@@ -4,20 +4,19 @@ var express = require('express'),
     mqtt = require('mqtt'),
     config = require('../../config.json');
 
-
-var router = express.Router();
-var mqtt_client;
+var router = express.Router(),
+    mqtt_client;
 
 // HTTP-MQTT bridge
 router.route('/')
 
     .all(function (req, res, next) {
 
-        var token_str = req.headers.authorization.split(" ");
-        var token = token_str[1];
+        var token_str = req.headers.authorization.split(" "),
+            token = token_str[1],
+            connstring = 'mqtt://decoplant@JWT:' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
 
-
-        mqtt_client = mqtt.connect('mqtt://' + req.originalUrl + '/JWT:' + token + '@' + config.mqtt.host + ':' + config.mqtt.port);
+        mqtt_client = mqtt.connect(connstring);
 
         mqtt_client
             .on('connect', function () {

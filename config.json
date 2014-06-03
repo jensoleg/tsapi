@@ -9,8 +9,16 @@
         "db": "mqtt",
         "verbose": true
     },
-    "auth0": {
-        "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",
-        "clientId": "riQAyvtyyRBNvO9zhRsQAXMEtaQA02uW"
+    "domains": {
+        "decoplant": {
+            "endpoint": "https://decoplant.auth0.com",
+            "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",
+            "clientId": "riQAyvtyyRBNvO9zhRsQAXMEtaQA02uW"
+        },
+        "bobbytech": {
+            "endpoint": "https://bobbytech.auth0.com",
+            "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",
+            "clientId": "riQAyvtyyRBNvO9zhRsQAXMEtaQA02uW"
+        }
     }
 }

@@ -3,7 +3,7 @@
 var express = require('express'),
     getRawBody = require('raw-body'),
     mongoose = require('mongoose'),
-    jwt = require('express-jwt'),
+    jwt = require('jsonwebtoken'),
     _ = require('lodash'),
     helmet = require('helmet'),
     config = require('./config.json'),
@@ -11,12 +11,10 @@ var express = require('express'),
     searchApi = require('./app/routes/timeseries.api.routes'),
     route = require('./app/routes/route');
 
-var app = express();
-
-var port = config.port || 8080;
+var app = express(),
+    port = config.port || 8080;
 
 mongoose.connect(config.mongoose.dbURI + config.mongoose.db);
-
 
 // Use helmet to secure Express headers
 app.use(helmet.xframe());
@@ -25,13 +23,21 @@ app.use(helmet.contentTypeOptions());
 app.use(helmet.ienoopen());
 app.disable('x-powered-by');
 
-var authenticate = jwt({
-    secret: new Buffer(config.domains[req.url].clientSecret, 'base64'),
-    audience: config.domains[req.url].clientId
-});
+app.use('*', function (req, res, next) {
+    var domain = req.headers['x-domain'],
+        secret = config.domains[domain].clientSecret,
+        clientId = config.domains[domain].clientId,
+        token_str = req.headers.authorization.split(" "),
+        token = token_str[1];
 
-//authenticate every api call
-app.use('*', authenticate);
+    jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
+        if (err) {
+            next(err);
+        }
+        else
+            next();
+    });
+});
 
 app.all('*', function (req, res, next) {
     // set origin policy etc so cross-domain access wont be an issue
@@ -48,7 +54,7 @@ app.all('*', function (req, res, next) {
 });
 
 // Get the raw body
-app.use(function (req, res, next) {
+app.use('*', function (req, res, next) {
     getRawBody(req, {
         length: req.headers['content-length'],
         limit: '1mb',
@@ -61,6 +67,7 @@ app.use(function (req, res, next) {
         next()
     })
 });
+
 
 // Register routes
 app.use('/', route.router);
@@ -78,4 +85,5 @@ app.use(function (err, req, res, next) {
 
 // Start the server
 app.listen(port);
+
 console.log('Magic happens on port ' + port);
