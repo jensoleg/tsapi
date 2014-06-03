@@ -75,8 +75,7 @@ router.route('/:device/:sensor')
 
         _request.format = 'hash';
 
-        //var mts = new MTS(req.params.device + '-' + req.params.sensor, {interval: 1});
-        var mts = new MTS('readings', {interval: 1, verbose: config.mongoose.verbose});
+        var mts = new MTS(req.originalUrl + '.' + req.params.device + '.' + req.params.sensor, {interval: 1});
         mts.findData(_request,
             function (error, data) {
                 if (error) {
@@ -89,7 +88,7 @@ router.route('/:device/:sensor')
                         "device": req.params.device,
                         "sensor": req.params.sensor,
                         "search": _request,
-                        "total" : data.length,
+                        "total": data.length,
                         "data": data
                     });
                 }

@@ -15,15 +15,9 @@ var app = express();
 
 var port = config.port || 8080;
 
+// TODO separate form mqtt database
 mongoose.connect(config.mongoose.dbURI + config.mongoose.db);
 
-var authenticate = jwt({
-    secret: new Buffer(config.auth0.clientSecret, 'base64'),
-    audience: config.auth0.clientId
-});
-
-//authenticate every api call
-app.use('*', authenticate);
 
 // Use helmet to secure Express headers
 app.use(helmet.xframe());
@@ -31,6 +25,17 @@ app.use(helmet.iexss());
 app.use(helmet.contentTypeOptions());
 app.use(helmet.ienoopen());
 app.disable('x-powered-by');
+
+
+// TODO dynamic client secret based on url lookup
+var authenticate = jwt({
+    secret: new Buffer(config.domains[req.url].clientSecret, 'base64'),
+    audience: config.domains[req.url].clientId
+});
+
+
+//authenticate every api call
+app.use('*', authenticate);
 
 app.all('*', function (req, res, next) {
     // set origin policy etc so cross-domain access wont be an issue

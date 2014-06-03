@@ -16,7 +16,8 @@ router.route('/')
         var token_str = req.headers.authorization.split(" ");
         var token = token_str[1];
 
-        mqtt_client = mqtt.connect('mqtt://JWT:' + token + '@' + config.mqtt.host + ':' + config.mqtt.port);
+
+        mqtt_client = mqtt.connect('mqtt://' + req.originalUrl + '/JWT:' + token + '@' + config.mqtt.host + ':' + config.mqtt.port);
 
         mqtt_client
             .on('connect', function () {
