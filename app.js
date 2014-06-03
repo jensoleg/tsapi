@@ -15,7 +15,6 @@ var app = express();
 
 var port = config.port || 8080;
 
-// TODO separate form mqtt database
 mongoose.connect(config.mongoose.dbURI + config.mongoose.db);
 
 
@@ -26,13 +25,10 @@ app.use(helmet.contentTypeOptions());
 app.use(helmet.ienoopen());
 app.disable('x-powered-by');
 
-
-// TODO dynamic client secret based on url lookup
 var authenticate = jwt({
     secret: new Buffer(config.domains[req.url].clientSecret, 'base64'),
     audience: config.domains[req.url].clientId
 });
-
 
 //authenticate every api call
 app.use('*', authenticate);
