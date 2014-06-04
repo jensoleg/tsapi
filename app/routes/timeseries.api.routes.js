@@ -1,18 +1,19 @@
 'use strict';
 
 var express = require('express'),
+    mongoose = require('mongoose'),
     MTS = require('mongoose-ts'),
     moment = require('moment'),
     _ = require('lodash'),
-    config = require('../../config.json');
+    router = express.Router(),
+    config = require('../../config.json'),
+    formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'},
+    intervals = ['1', '60', '3600'],
+    connection = mongoose.connection;
 
-var router = express.Router();
-
-var formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'};
-var intervals = ['1', '60', '3600'];
 
 // search time series database
-router.route('/:device/:sensor')
+router.route('/*')
 
     .get(function (req, res, next) {
 
@@ -25,16 +26,6 @@ router.route('/:device/:sensor')
             limit: 100,
             format: formats.hash
         };
-
-        // device: check existence
-        if (req.params.device == undefined) {
-            next(new Error('Please specify a device'));
-        }
-
-        // sensor: check valid combination /device/sensor
-        if (req.params.sensor == undefined) {
-            next(new Error('Please specify an event/sensor'));
-        }
 
         // start: start time
         if (req.query.from != undefined) {
@@ -75,7 +66,16 @@ router.route('/:device/:sensor')
 
         _request.format = 'hash';
 
-        var mts = new MTS(req.originalUrl + '.' + req.params.device + '.' + req.params.sensor, {interval: 1});
+        // Build mongo collection identifier
+        var topics = req.params[0].split('/'),
+            collName = req.headers['x-domain'];
+
+        for (var x in topics) {
+            collName = collName + '@' + topics[x];
+        }
+
+        var mts = new MTS(connection, collName, {interval: 1, verbose: config.mongoose.verbose});
+
         mts.findData(_request,
             function (error, data) {
                 if (error) {
@@ -85,8 +85,7 @@ router.route('/:device/:sensor')
                     res.json({
                         "status": "success",
                         "message": data.length + ' readings data found',
-                        "device": req.params.device,
-                        "sensor": req.params.sensor,
+                        "topic": collName,
                         "search": _request,
                         "total": data.length,
                         "data": data
