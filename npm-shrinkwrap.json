@@ -107,32 +107,6 @@
         }
       }
     },
-    "express-jwt": {
-      "version": "0.2.1",
-      "from": "express-jwt@",
-      "dependencies": {
-        "jsonwebtoken": {
-          "version": "0.4.0",
-          "from": "jsonwebtoken@~0.4.0",
-          "dependencies": {
-            "jws": {
-              "version": "0.2.5",
-              "from": "jws@~0.2.2",
-              "dependencies": {
-                "base64url": {
-                  "version": "0.0.6",
-                  "from": "base64url@0.0.6"
-                },
-                "jwa": {
-                  "version": "0.0.1",
-                  "from": "jwa@0.0.1"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "helmet": {
       "version": "0.2.1",
       "from": "helmet@",
@@ -147,6 +121,28 @@
           "version": "1.6.0",
           "from": "underscore@1.6.x",
           "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
+        }
+      }
+    },
+    "jsonwebtoken": {
+      "version": "0.4.0",
+      "from": "jsonwebtoken@",
+      "dependencies": {
+        "jws": {
+          "version": "0.2.5",
+          "from": "jws@~0.2.2",
+          "dependencies": {
+            "base64url": {
+              "version": "0.0.6",
+              "from": "base64url@0.0.6",
+              "resolved": "https://registry.npmjs.org/base64url/-/base64url-0.0.6.tgz"
+            },
+            "jwa": {
+              "version": "0.0.1",
+              "from": "jwa@0.0.1",
+              "resolved": "https://registry.npmjs.org/jwa/-/jwa-0.0.1.tgz"
+            }
+          }
         }
       }
     },
@@ -225,11 +221,12 @@
     "mongoose-ts": {
       "version": "0.0.2",
       "from": "git://github.com/jensoleg/mongoose-timeseries",
-      "resolved": "git://github.com/jensoleg/mongoose-timeseries#e8d706ff5d3424baba571b06965263419500c15c",
+      "resolved": "git://github.com/jensoleg/mongoose-timeseries#7ed672ce6e55c96b7fc1e914d1884a55bf25ee8c",
       "dependencies": {
         "underscore": {
           "version": "1.6.0",
-          "from": "underscore@*"
+          "from": "underscore@*",
+          "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.6.0.tgz"
         }
       }
     },
