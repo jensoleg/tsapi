@@ -97,7 +97,7 @@ router.route('/*')
                 else {
                     res.json({
                         "status": "success",
-                        "message": data.length + ' readings data found',
+                        "message": data.length + ' readings found',
                         "topic": collName,
                         "search": _request,
                         "total": data.length,
