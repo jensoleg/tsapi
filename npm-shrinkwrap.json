@@ -154,6 +154,11 @@
       "version": "2.6.0",
       "from": "moment@"
     },
+    "mongodb-uri": {
+      "version": "0.9.6",
+      "from": "mongodb-uri@",
+      "resolved": "https://registry.npmjs.org/mongodb-uri/-/mongodb-uri-0.9.6.tgz"
+    },
     "mongoose": {
       "version": "3.8.9",
       "from": "mongoose@",

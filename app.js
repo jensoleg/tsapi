@@ -2,7 +2,6 @@
 
 var express = require('express'),
     getRawBody = require('raw-body'),
-    mongoose = require('mongoose'),
     jwt = require('jsonwebtoken'),
     _ = require('lodash'),
     helmet = require('helmet'),
@@ -13,8 +12,6 @@ var express = require('express'),
 
 var app = express(),
     port = config.port || 8080;
-
-mongoose.connect(config.mongoose.dbURI + config.mongoose.db);
 
 // Use helmet to secure Express headers
 app.use(helmet.xframe());

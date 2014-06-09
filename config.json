@@ -4,10 +4,10 @@
         "host": "localhost",
         "port": 1883
     },
-    "mongoose": {
+    "tsstore": {
         "dbURI": "mongodb://localhost/",
         "db": "timeseries",
-        "verbose": true
+        "verbose": false
     },
     "domains": {
         "decoplant": {

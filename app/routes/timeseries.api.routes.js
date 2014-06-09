@@ -5,12 +5,25 @@ var express = require('express'),
     MTS = require('mongoose-ts'),
     moment = require('moment'),
     _ = require('lodash'),
+    uriUtil = require('mongodb-uri'),
     router = express.Router(),
     config = require('../../config.json'),
     formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'},
-    intervals = ['1', '60', '3600'],
-    connection = mongoose.connection;
+    intervals = ['1', '60', '3600'];
 
+
+var options = {
+    server: {
+        socketOptions: {
+            keepAlive: 1,
+            connectTimeoutMS: 30000
+        }
+    }
+};
+
+var mongodbTSUri = config.tsstore.dbURI + config.tsstore.db,
+    mongooseTSUri = uriUtil.formatMongoose(mongodbTSUri),
+    TSconnection = mongoose.createConnection(mongooseTSUri, options);
 
 // search time series database
 router.route('/*')
@@ -74,7 +87,7 @@ router.route('/*')
             collName = collName + '@' + topics[x];
         }
 
-        var mts = new MTS(connection, collName, {interval: 1, verbose: config.mongoose.verbose});
+        var mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
 
         mts.findData(_request,
             function (error, data) {
