@@ -14,12 +14,13 @@ var express = require('express'),
     lruOptions = {
         max: 500,
         length: function (n) {
-            return n * 2
+            return n * 2;
         },
         dispose: function (key, n) {
-            n.close()
+            n.close();
         },
-        maxAge: 1000 * 60 * 60 },
+        maxAge: 1000 * 60 * 60
+    },
     cache = LRU(lruOptions);
 
 var options = {
@@ -51,7 +52,7 @@ router.route('/*')
             };
 
         // start: start time
-        if (req.query.from != undefined) {
+        if (req.query.from !== undefined) {
             if (!moment(req.query.from).isValid()) {
                 return next(new Error('Invalid start timestamp'));
             } else {
@@ -60,7 +61,7 @@ router.route('/*')
         }
 
         // end:  end time - default now
-        if (req.query.to != undefined) {
+        if (req.query.to !== undefined) {
             if (!moment(req.query.to).isValid()) {
                 return next(new Error('Invalid end timestamp'));
             } else {
@@ -69,7 +70,7 @@ router.route('/*')
         }
 
         // interval: 0,60,3600 - default 0
-        if (req.query.interval != undefined) {
+        if (req.query.interval !== undefined) {
             if (!_.contains(intervals, req.query.interval)) {
                 return next(new Error('Invalid interval - only 1 (seconds), 60 (minutes), 3600 (hours) allowed'));
             } else {
@@ -78,7 +79,7 @@ router.route('/*')
         }
 
         // limit: default is 100 - max 1000
-        if (req.query.limit != undefined) {
+        if (req.query.limit !== undefined) {
             if (req.query.limit < 1 || req.query.limit > 1000) {
                 return next(new Error('Invalid limit - must be in range 1-1000'));
             } else {
@@ -87,7 +88,7 @@ router.route('/*')
         }
 
         // limit: default is 100 - max 1000
-        if (req.query.format != undefined) {
+        if (req.query.format !== undefined) {
             if (!formats[req.query.format]) {
                 return next(new Error('Invalid format  - only hash, timestamp, time allowed'));
             } else {
@@ -96,8 +97,8 @@ router.route('/*')
         }
 
         // Build mongo collection identifier
-        topics = req.params[0].split('/'),
-            collName = req.headers['x-domain'];
+        topics = req.params[0].split('/');
+        collName = req.headers['x-domain'];
 
         for (var x in topics) {
             collName = collName + '@' + topics[x];
@@ -106,7 +107,7 @@ router.route('/*')
         mts = cache.get(collName);
         if (!mts) {
             mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
-            cache.set(collName, mts)
+            cache.set(collName, mts);
         }
 
         mts.findData(_request,
