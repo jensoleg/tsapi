@@ -2,10 +2,10 @@
 
 var express = require('express'),
     mqtt = require('mqtt'),
-    config = require('../../config.json');
-
-var router = express.Router(),
-    mqtt_client;
+    config = require('../../config.json'),
+    router = express.Router(),
+    mqtt_client,
+    topic;
 
 // HTTP-MQTT bridge
 router.route('/')
@@ -17,6 +17,8 @@ router.route('/')
             token = token_str[1],
             connstring = 'mqtt://JWT@' + domain + ':' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
 
+
+        topic = '/' + domain + req.originalUrl;
         mqtt_client = mqtt.connect(connstring);
 
         mqtt_client
@@ -32,12 +34,12 @@ router.route('/')
 
     .post(function (req, res, next) {
 
-        mqtt_client.publish(req.originalUrl, req.text, {qos: 0, retain: false}, function (err) {
+        mqtt_client.publish(topic, req.text, {qos: 0, retain: false}, function (err) {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: req.originalUrl,
+                    topic: topic,
                     payload: req.text
                 },
                 "message": 'Topic posted'
@@ -53,14 +55,14 @@ router.route('/')
         var retained_message;
 
         mqtt_client
-            .subscribe(req.originalUrl)
+            .subscribe(topic)
             .on('message', function (topic, message) {
 
                 retained_message = message;
                 res.json({
                     "status": "success",
                     "data": {
-                        topic: req.originalUrl,
+                        topic: topic,
                         payload: message
                     },
                     "message": 'Got topic'
@@ -75,7 +77,7 @@ router.route('/')
                 res.json({
                     "status": "success",
                     "data": {
-                        topic: req.originalUrl,
+                        topic: topic,
                         payload: ' '
                     },
                     "message": 'Topic not available'
@@ -90,12 +92,12 @@ router.route('/')
 
     .put(function (req, res, next) {
 
-        mqtt_client.publish(req.originalUrl, req.text, {qos: 0, retain: true}, function () {
+        mqtt_client.publish(topic, req.text, {qos: 0, retain: true}, function () {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: req.originalUrl,
+                    topic: topic,
                     payload: req.text
                 },
                 "message": 'Put topic'
@@ -108,12 +110,12 @@ router.route('/')
 
     .delete(function (req, res, next) {
 
-        mqtt_client.publish(req.originalUrl, '', {retain: true}, function () {
+        mqtt_client.publish(topic, '', {retain: true}, function () {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: req.originalUrl,
+                    topic: topic,
                     payload: ' '
                 },
                 "message": 'Delete topic'
@@ -126,8 +128,9 @@ router.route('/')
 
     .all(function (req, res, next) {
 
-        if (mqtt_client.connected)
+        if (mqtt_client.connected) {
             mqtt_client.end();
+        }
 
     });
 
