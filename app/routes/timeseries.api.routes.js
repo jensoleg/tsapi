@@ -11,12 +11,15 @@ var express = require('express'),
     formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'},
     intervals = ['1', '60', '3600'],
     LRU = require("lru-cache"),
-    lruOptions = { max: 500,
+    lruOptions = {
+        max: 500,
         length: function (n) {
             return n * 2
-        }, dispose: function (key, n) {
+        },
+        dispose: function (key, n) {
             n.close()
-        }, maxAge: 1000 * 60 * 60 },
+        },
+        maxAge: 1000 * 60 * 60 },
     cache = LRU(lruOptions);
 
 var options = {
