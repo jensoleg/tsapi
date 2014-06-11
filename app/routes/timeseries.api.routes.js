@@ -9,8 +9,15 @@ var express = require('express'),
     router = express.Router(),
     config = require('../../config.json'),
     formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'},
-    intervals = ['1', '60', '3600'];
-
+    intervals = ['1', '60', '3600'],
+    LRU = require("lru-cache"),
+    lruOptions = { max: 500,
+        length: function (n) {
+            return n * 2
+        }, dispose: function (key, n) {
+            n.close()
+        }, maxAge: 1000 * 60 * 60 },
+    cache = LRU(lruOptions);
 
 var options = {
     server: {
@@ -93,7 +100,11 @@ router.route('/*')
             collName = collName + '@' + topics[x];
         }
 
-        mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
+        mts = cache.get(collName);
+        if (!mts) {
+            mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
+            cache.set(collName, mts)
+        }
 
         mts.findData(_request,
             function (error, data) {
