@@ -12,9 +12,10 @@ router.route('/')
 
     .all(function (req, res, next) {
 
-        var token_str = req.headers.authorization.split(" "),
+        var domain = req.headers['x-domain'],
+            token_str = req.headers.authorization.split(" "),
             token = token_str[1],
-            connstring = 'mqtt://decoplant@JWT:' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
+            connstring = 'mqtt://JWT@' + domain + ':' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
 
         mqtt_client = mqtt.connect(connstring);
 
