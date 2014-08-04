@@ -9,7 +9,17 @@
         "db": "timeseries",
         "verbose": false
     },
+    "bobby": {
+        "dbURI": "mongodb://localhost/",
+        "db": "bobby",
+        "verbose": false
+    },
     "domains": {
+        "localhost:8081": {
+            "endpoint": "https://decoplant.auth0.com",
+            "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",
+            "clientId": "riQAyvtyyRBNvO9zhRsQAXMEtaQA02uW"
+        },
         "decoplant": {
             "endpoint": "https://decoplant.auth0.com",
             "clientSecret": "7INrZwoivJwCP600uV_AbCI6QXVF1nGOSq4VnTHv_pYyvn27xV15JLtiYPa59ajt",

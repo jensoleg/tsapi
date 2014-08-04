@@ -1,14 +1,19 @@
 'use strict';
 
 var express = require('express'),
-    getRawBody = require('raw-body'),
+    bodyParser = require('body-parser'),
     jwt = require('jsonwebtoken'),
     _ = require('lodash'),
     helmet = require('helmet'),
     config = require('./config.json'),
     mqttHttpBridge = require('./app/routes/mqtt.http.routes'),
-    searchApi = require('./app/routes/timeseries.api.routes'),
-    route = require('./app/routes/route');
+    searchApi = require('./app/routes/timeseries.routes'),
+    devicesApi = require('./app/routes/devices.routes'),
+    auth0Api = require('./app/routes/auth0.api.routes'),
+    electricImp = require('./app/routes/electricimp.agent.routes'),
+    authentication = require('./app/routes/authentication.auth0.routes'),
+    route = require('./app/routes/route'),
+    runOptions = require('./app/options');
 
 var app = express(),
     port = config.port || 8080;
@@ -19,65 +24,69 @@ app.use(helmet.iexss());
 app.use(helmet.contentTypeOptions());
 app.use(helmet.ienoopen());
 app.disable('x-powered-by');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 app.use('*', function (req, res, next) {
-    var domain = req.headers['x-domain'],
-        secret = config.domains[domain].clientSecret,
-        clientId = config.domains[domain].clientId,
+    var realm = req.headers.realm,
+        secret = config.domains[realm].clientSecret,
+        clientId = config.domains[realm].clientId,
         token_str = req.headers.authorization.split(" "),
         token = token_str[1];
 
-    jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
-        if (err) {
-            next(err);
-        }
-        else
-            next();
-    });
+    runOptions.set({realm: realm});
+
+    if ('OPTIONS' === req.method) {
+        next();
+    }
+    else {
+        jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
+            if (err) {
+                next(err);
+            }
+            else {
+                next();
+            }
+        });
+    }
 });
 
 app.all('*', function (req, res, next) {
+
     // set origin policy etc so cross-domain access wont be an issue
-
     res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With,  Content-Type, Accept');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,PATCH');
+    res.header('Access-Control-Allow-Headers', 'Authorization, Origin, X-Requested-With,  Content-Type, Accept');
 
-    if (!_.isEmpty(req.query)) {
-        req.url = '/search' + req.url;
-    } else
-        req.url = '/mqtt';
-
-    next();
+    if ('OPTIONS' === req.method) {
+        res.send(200);
+    } else {
+        next();
+    }
 });
-
-// Get the raw body
-app.use('*', function (req, res, next) {
-    getRawBody(req, {
-        length: req.headers['content-length'],
-        limit: '1mb',
-        encoding: 'utf8'
-    }, function (err, string) {
-        if (err)
-            return next(err);
-
-        req.text = string;
-        next()
-    })
-});
-
 
 // Register routes
-app.use('/', route.router);
-app.use('/mqtt', mqttHttpBridge.router);
-app.use('/search', searchApi.router);
+app.use('/', route.router)
+    .use('/api/agent', electricImp.router)
+    .use('/api/broker', mqttHttpBridge.router)
+    .use('/api/datastreams', searchApi.router)
+    .use('/api/devices', devicesApi.router)
+    .use('/api/authenticate', authentication.router)
+    .use('/api/auth', auth0Api.router);
+
 
 // Error handler ....
 app.use(function (err, req, res, next) {
-    res.send(400, {
-        'status': 'error',
-        'code': 404,
-        'message': err.message
-    });
+    if (err) {
+        res.send(400, {
+            'status': 'error',
+            'code': 404,
+            'message': err.message,
+            'error': err
+        });
+    }
 });
 
 // Start the server

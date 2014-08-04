@@ -3,22 +3,29 @@
 var express = require('express'),
     mqtt = require('mqtt'),
     config = require('../../config.json'),
+    runOptions = require('../options'),
     router = express.Router(),
     mqtt_client,
-    topic;
+    topic,
+    topicValue;
 
 // HTTP-MQTT bridge
-router.route('/')
+router.route('/*')
 
     .all(function (req, res, next) {
 
-        var domain = req.headers['x-domain'],
+        var realm = runOptions.options.realm,
             token_str = req.headers.authorization.split(" "),
             token = token_str[1],
-            connstring = 'mqtt://JWT@' + domain + ':' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
+            connstring = 'mqtt://JWT@' + realm + ':' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
 
+        if (req.body.value) {
+            topicValue = req.body.value;
+        } else {
+            topicValue = JSON.stringify(req.body);
+        }
 
-        topic = '/' + domain + req.originalUrl;
+        topic = '/' + realm + req.url;
         mqtt_client = mqtt.connect(connstring);
 
         mqtt_client
@@ -34,13 +41,13 @@ router.route('/')
 
     .post(function (req, res, next) {
 
-        mqtt_client.publish(topic, req.text, {qos: 0, retain: false}, function (err) {
+        mqtt_client.publish(topic, topicValue, {qos: 0, retain: false}, function (err) {
 
             res.json({
                 "status": "success",
                 "data": {
                     topic: topic,
-                    payload: req.text
+                    payload: topicValue
                 },
                 "message": 'Topic posted'
             });
@@ -92,13 +99,13 @@ router.route('/')
 
     .put(function (req, res, next) {
 
-        mqtt_client.publish(topic, req.text, {qos: 0, retain: true}, function () {
+        mqtt_client.publish(topic, topicValue, {qos: 0, retain: true}, function () {
 
             res.json({
                 "status": "success",
                 "data": {
                     topic: topic,
-                    payload: req.text
+                    payload: topicValue
                 },
                 "message": 'Put topic'
             });

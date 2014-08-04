@@ -6,6 +6,7 @@
     "start": "node ./app.js"
   },
   "dependencies": {
+    "body-parser": "^1.5.2",
     "debug": "~0.7.4",
     "express": "^4.2.0",
     "helmet": "^0.2.1",
@@ -17,7 +18,8 @@
     "mongoose": "^3.8.12",
     "mongoose-ts": "git://github.com/jensoleg/mongoose-timeseries",
     "mqtt": "^0.3.8",
-    "raw-body": "^1.1.5"
+    "raw-body": "^1.1.5",
+    "request": "^2.39.0"
   },
   "description": "HTTP Time series mongodb api and MQTT bridge",
   "main": "app.js",

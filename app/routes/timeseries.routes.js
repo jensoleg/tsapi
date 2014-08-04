@@ -11,13 +11,14 @@ var express = require('express'),
     formats = {'hash': 'hash', timestamp: '[x,y]', time: '[ms,y]'},
     intervals = ['1', '60', '3600'],
     LRU = require("lru-cache"),
+    runOptions = require('../options'),
     lruOptions = {
         max: 500,
         length: function (n) {
             return n * 2;
         },
         dispose: function (key, n) {
-            n.close();
+
         },
         maxAge: 1000 * 60 * 60
     },
@@ -87,7 +88,7 @@ router.route('/*')
             }
         }
 
-        // limit: default is 100 - max 1000
+        // format : hash, timestamp, time
         if (req.query.format !== undefined) {
             if (!formats[req.query.format]) {
                 return next(new Error('Invalid format  - only hash, timestamp, time allowed'));
@@ -98,7 +99,7 @@ router.route('/*')
 
         // Build mongo collection identifier
         topics = req.params[0].split('/');
-        collName = req.headers['x-domain'];
+        collName = runOptions.options.realm;
 
         for (var x in topics) {
             collName = collName + '@' + topics[x];
