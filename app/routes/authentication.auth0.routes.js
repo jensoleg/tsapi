@@ -21,7 +21,6 @@ router.route('/*')
 
         auth0API.url = 'https://' + runOptions.options.realm + '.auth0.com' + req.url;
         auth0API.method = req.method;
-        console.log(req.headers.authorization);
         if (req.headers.authorization) {
             auth0API.headers.Authorization = req.headers.authorization;
         }
