@@ -11,7 +11,6 @@ var
         method: undefined,
         headers: {
             Authorization: 'undefined',
-            realm: 'undefined'
         }
     };
 
@@ -20,8 +19,7 @@ router.route('/*')
     .all(function (req, res, next) {
 
         agentApi.url = 'http://agent.electricimp.com' + req.url;
-        agentApi.headers.Authorization = req.Authorization;
-        agentApi.headers.realm = req.realm;
+        agentApi.headers.Authorization = req.headers.authorization;
         agentApi.method = req.method;
         agentApi.body = req.body;
 
