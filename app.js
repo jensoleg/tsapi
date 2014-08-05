@@ -29,29 +29,14 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
-app.use('*', function (req, res, next) {
-    var realm = req.headers.realm,
-        secret = config.domains[realm].clientSecret,
-        clientId = config.domains[realm].clientId,
-        token_str = req.headers.authorization.split(" "),
-        token = token_str[1];
 
-    runOptions.set({realm: realm});
+app.all('*', function (req, res, next) {
 
-    if ('OPTIONS' === req.method) {
-        next();
-    }
-    else {
-        jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
-            if (err) {
-                next(err);
-            }
-            else {
-                next();
-            }
-        });
-    }
+    runOptions.set({realm: req.headers.realm});
+    next();
+
 });
+
 
 app.all('*', function (req, res, next) {
 
@@ -65,6 +50,28 @@ app.all('*', function (req, res, next) {
     } else {
         next();
     }
+
+});
+
+app.use('/api/authenticate', authentication.router);
+
+app.use('*', function (req, res, next) {
+
+    var realm = runOptions.options.realm,
+        secret = config.domains[realm].clientSecret,
+        clientId = config.domains[realm].clientId,
+        token_str = req.headers.authorization.split(" "),
+        token = token_str[1];
+
+    jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
+        if (err) {
+            next(err);
+        }
+        else {
+            next();
+        }
+    });
+
 });
 
 // Register routes
@@ -73,9 +80,7 @@ app.use('/', route.router)
     .use('/api/broker', mqttHttpBridge.router)
     .use('/api/datastreams', searchApi.router)
     .use('/api/devices', devicesApi.router)
-    .use('/api/authenticate', authentication.router)
     .use('/api/auth', auth0Api.router);
-
 
 // Error handler ....
 app.use(function (err, req, res, next) {

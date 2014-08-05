@@ -33,14 +33,14 @@ var auth0Token = {
     };
 
 // refresh token
-
-
 router.use(function (req, res, next) {
+
     var elapsedTime = moment.duration(moment().diff(moment(token.exp))).get("minutes");
 
     if (token.exp && elapsedTime > 23) {
         token.exp = undefined;
     }
+
     next();
 
 });

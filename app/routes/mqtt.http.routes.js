@@ -25,7 +25,9 @@ router.route('/*')
             topicValue = JSON.stringify(req.body);
         }
 
-        topic = '/' + realm + req.url;
+        //topic = '/' + realm + req.url;
+        topic = req.url;
+
         mqtt_client = mqtt.connect(connstring);
 
         mqtt_client

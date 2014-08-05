@@ -2,10 +2,10 @@
 
 var Options = module.exports = {
     options: undefined,
-    set: function(opt) {
+    set: function (opt) {
         this.options = opt || this.options;
     },
-    get: function() {
+    get: function () {
         return this.options;
     }
 };
