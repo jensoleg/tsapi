@@ -83,9 +83,9 @@ app.use('/', route.router)
     .use('/api/auth', auth0Api.router);
 
 // Error handler ....
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) {    
     if (err) {
-        res.send(400, {
+        res.json(400, {
             'status': 'error',
             'code': 404,
             'message': err.message,

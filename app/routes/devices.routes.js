@@ -34,7 +34,7 @@ router.route('/:id')
 
     .get(function (req, res, next) {
 
-        deviceModel.findOne({_id: req.params.id}, function (err, device) {
+        deviceModel.findOne({id: req.params.id}, function (err, device) {
             if (err) {
                 next(err);
             } else {
@@ -45,7 +45,7 @@ router.route('/:id')
 
     .put(function (req, res, next) {
 
-        deviceModel.findOneAndUpdate({_id: req.params.id}, req.body, function (err, device) {
+        deviceModel.findOneAndUpdate({id: req.params.id}, req.body, function (err, device) {
 
             if (err) {
                 next(err);
@@ -58,7 +58,7 @@ router.route('/:id')
 
     .delete(function (req, res, next) {
 
-        deviceModel.findOneAndRemove({_id: req.params.id}, function (err, device) {
+        deviceModel.findOneAndRemove({id: req.params.id}, function (err, device) {
             if (err) {
                 next(err);
             } else {
