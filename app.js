@@ -65,9 +65,11 @@ app.use('*', function (req, res, next) {
 
     jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
         if (err) {
+            runOptions.options.currentUser = '';
             next(err);
         }
         else {
+            runOptions.options.currentUser = decoded.name;
             next();
         }
     });

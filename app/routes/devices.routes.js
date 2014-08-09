@@ -3,6 +3,7 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
+    moment = require('moment'),
     runOptions = require('../options'),
     Device = require('../models/device.js'),
     deviceModel,
@@ -45,7 +46,11 @@ router.route('/:id')
 
     .put(function (req, res, next) {
 
-        deviceModel.findOneAndUpdate({id: req.params.id}, req.body, function (err, device) {
+        var device = req.body;
+        device.updatedAt.date = moment();
+        device.updatedAt.user = runOptions.options.currentUser;
+
+        deviceModel.findOneAndUpdate({id: req.params.id}, device, function (err, device) {
 
             if (err) {
                 next(err);
@@ -72,6 +77,9 @@ router.route('/')
     .post(function (req, res, next) {
 
         var device = new deviceModel(req.body);
+
+        device.updatedAt.date = moment();
+        device.updatedAt.user = runOptions.options.currentUser;
 
         device.save(function (err) {
             if (err) {
