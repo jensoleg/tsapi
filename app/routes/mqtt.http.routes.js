@@ -4,13 +4,10 @@ var express = require('express'),
     mqtt = require('mqtt'),
     config = require('../../config.json'),
     runOptions = require('../options'),
-    router = express.Router(),
-    mqtt_client,
-    topic,
-    topicValue;
+    router = express.Router();
 
 // HTTP-MQTT bridge
-router.route('/*')
+router.route('/:device/:stream')
 
     .all(function (req, res, next) {
 
@@ -19,55 +16,44 @@ router.route('/*')
             token = token_str[1],
             connstring = 'mqtt://JWT@' + realm + ':' + token + '@' + config.mqtt.host + ':' + config.mqtt.port;
 
+        req.mqtt_client = mqtt.connect(connstring);
+
         if (req.body.value) {
-            topicValue = req.body.value;
+            req.topicValue = req.body.value;
         } else {
-            topicValue = JSON.stringify(req.body);
+            req.topicValue = JSON.stringify(req.body);
         }
 
-        topic = '/' + realm + req.url;
-        //topic = req.url;
+        req.topic = '/' + realm + req.url;
 
-        mqtt_client = mqtt.connect(connstring);
-
-        mqtt_client
-            .on('connect', function () {
-                next();
-            })
-            .on('error', function (err) {
-                next(err);
-            })
-            .options.reconnectPeriod = 0;
-
+        next();
     })
 
     .post(function (req, res, next) {
 
-        mqtt_client.publish(topic, topicValue, {qos: 0, retain: false}, function (err) {
+        req.mqtt_client.publish(req.topic, req.topicValue, {qos: 0, retain: false}, function (err) {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: topic,
-                    payload: topicValue
+                    topic: req.topic,
+                    payload: req.topicValue
                 },
                 "message": 'Topic posted'
             });
-
-            next();
         });
 
+        req.mqtt_client.end();
     })
 
     .get(function (req, res, next) {
 
-        var retained_message;
-
-        mqtt_client
-            .subscribe(topic)
+        req.mqtt_client
+            .subscribe(req.topic)
             .on('message', function (topic, message) {
 
-                retained_message = message;
+                req.mqtt_client.end();
+
                 res.json({
                     "status": "success",
                     "data": {
@@ -76,70 +62,44 @@ router.route('/*')
                     },
                     "message": 'Got topic'
                 });
-
-                next();
             });
-
-        setTimeout(function () {
-
-            if (!retained_message) {
-                res.json({
-                    "status": "success",
-                    "data": {
-                        topic: topic,
-                        payload: ' '
-                    },
-                    "message": 'Topic not available'
-                });
-
-                next();
-            }
-
-        }, 300);
 
     })
 
     .put(function (req, res, next) {
 
-        mqtt_client.publish(topic, topicValue, {qos: 0, retain: true}, function () {
+        req.mqtt_client.publish(req.topic, req.topicValue, {qos: 0, retain: true}, function () {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: topic,
-                    payload: topicValue
+                    topic: req.topic,
+                    payload: req.topicValue
                 },
                 "message": 'Put topic'
             });
-
-            next();
         });
+
+        req.mqtt_client.end();
 
     })
 
     .delete(function (req, res, next) {
 
-        mqtt_client.publish(topic, '', {retain: true}, function () {
+        req.mqtt_client.publish(req.topic, '', {retain: true}, function () {
 
             res.json({
                 "status": "success",
                 "data": {
-                    topic: topic,
+                    topic: req.topic,
                     payload: ' '
                 },
                 "message": 'Delete topic'
             });
 
-            next();
         });
 
-    })
-
-    .all(function (req, res, next) {
-
-        if (mqtt_client.connected) {
-            mqtt_client.end();
-        }
+        req.mqtt_client.end();
 
     });
 

@@ -86,6 +86,7 @@ app.use('/', route.router)
 
 // Error handler ....
 app.use(function (err, req, res, next) {
+    console.log('err:', err);
     if (err) {
         res.json(400, {
             'status': 'error',
