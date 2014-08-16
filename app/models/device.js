@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    Mixed = mongoose.Schema.Types.Mixed;
+    Schema = mongoose.Schema;
 
 var DeviceSchema = new Schema(
     {
@@ -8,13 +7,15 @@ var DeviceSchema = new Schema(
             date: {type: Date},
             user: {type: String}
         },
+        comment: String,
         name: String,
+        location: String,
         id: String,
-        location: {lat: Number, lng: Number},
         controls: [
             {
                 id: String,
                 name: String,
+                comment: String,
                 ctrlType: String,
                 minValue: Number,
                 maxValue: Number,
@@ -22,13 +23,16 @@ var DeviceSchema = new Schema(
                 maxCritical: Number,
                 unit: {
                     symbol: String,
-                    units: String
+                    units: String,
+                    conversion_exp: String
                 }
             }
         ],
         triggers: [
             {
-                request: [ {request_options: Schema.Types.Mixed} ],
+                request: [
+                    {request_options: Schema.Types.Mixed}
+                ],
                 trigger_type: { type: String, enum: ['lt', 'lte', 'gt', 'gte', 'eq'] },
                 threshold_value: String,
                 stream_id: String,
@@ -38,5 +42,17 @@ var DeviceSchema = new Schema(
         ]
     }
 );
+
+/*
+var InstallationSchema = new Schema(
+    {
+        name: String,
+        place: String,
+        location: {lat: Number, lng: Number},
+        comment: String,
+        devices: [ DeviceSchema ]
+    }
+);
+*/
 
 module.exports = mongoose.model('Device', DeviceSchema);
