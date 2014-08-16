@@ -44,7 +44,7 @@ router.route('/*')
         var topics, mts, collName,
             _request =
             {
-                from: moment().subtract('d', 1).toJSON(),
+                from: moment().subtract(1,'d').toJSON(),
                 to: moment().toJSON(),
                 condition: {},
                 interval: 1,
