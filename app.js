@@ -10,7 +10,7 @@ var express = require('express'),
     searchApi = require('./app/routes/timeseries.routes'),
     devicesApi = require('./app/routes/devices.routes'),
     auth0Api = require('./app/routes/auth0.api.routes'),
-    electricImp = require('./app/routes/electricimp.agent.routes'),
+    electricImp = require('./app/routes/electricimp.routes'),
     authentication = require('./app/routes/authentication.auth0.routes'),
     route = require('./app/routes/route'),
     runOptions = require('./app/options');
@@ -46,7 +46,7 @@ app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Authorization, realm, Origin, X-Requested-With,  Content-Type, Accept');
 
     if ('OPTIONS' === req.method) {
-        res.send(200);
+        res.send.status(200);
     } else {
         next();
     }

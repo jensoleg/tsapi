@@ -14,7 +14,6 @@ var auth0API = {
     }
 };
 
-
 router.route('/*')
 
     .all(function (req, res, next) {
