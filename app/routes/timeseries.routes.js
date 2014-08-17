@@ -44,8 +44,8 @@ router.route('/*')
         var topics, mts, collName,
             _request =
             {
-                from: moment().utc().subtract(1,'d'),
-                to: moment().utc(), 
+                from: moment(moment()).utc().subtract(1,'d'),
+                to: moment(moment()).utc(),
                 condition: {},
                 interval: 1,
                 limit: 100,
@@ -57,7 +57,7 @@ router.route('/*')
             if (!moment(req.query.from).isValid()) {
                 return next(new Error('Invalid start timestamp'));
             } else {
-                _request.from = req.query.from;
+                _request.from = moment(req.query.from).utc();
             }
         }
 
@@ -66,7 +66,7 @@ router.route('/*')
             if (!moment(req.query.to).isValid()) {
                 return next(new Error('Invalid end timestamp'));
             } else {
-                _request.to = req.query.to;
+                _request.to = moment(req.query.to).utc();
             }
         }
 
@@ -110,7 +110,13 @@ router.route('/*')
             mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
             cache.set(collName, mts);
         }
+/*
+        console.log(moment(_request.from).format());
+        console.log(moment(_request.to).format());
 
+        console.log(moment.utc(_request.from).format());
+        console.log(moment.utc(_request.to).format());
+*/
         mts.findData(_request,
             function (error, data) {
                 if (error) {

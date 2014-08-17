@@ -388,7 +388,7 @@
     "mongoose-ts": {
       "version": "0.0.3",
       "from": "git://github.com/jensoleg/mongoose-timeseries",
-      "resolved": "git://github.com/jensoleg/mongoose-timeseries#31a6c04526ddbcb587c9f16d79fdeada797fd048",
+      "resolved": "git://github.com/jensoleg/mongoose-timeseries#becac2b1b05486fa2f92cc6e2261b871d16d687c",
       "dependencies": {
         "underscore": {
           "version": "1.6.0",
