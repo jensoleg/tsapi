@@ -29,8 +29,7 @@ router.route('/*')
             if (!error && response.statusCode === 200) {
                 res.json(body);
             } else {
-                res.statusCode = response.statusCode;
-                res.json(body);
+                res.status(response.statusCode).json(body);
             }
         });
 

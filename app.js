@@ -46,7 +46,7 @@ app.all('*', function (req, res, next) {
     res.header('Access-Control-Allow-Headers', 'Authorization, realm, Origin, X-Requested-With,  Content-Type, Accept');
 
     if ('OPTIONS' === req.method) {
-        res.send.status(200);
+        res.status(200).end();
     } else {
         next();
     }
