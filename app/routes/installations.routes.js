@@ -3,10 +3,9 @@
 var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
-    moment = require('moment'),
     runOptions = require('../options'),
-    Device = require('../models/device.js'),
-    deviceModel,
+    Installation = require('devices'),
+    installation,
     uriUtil = require('mongodb-uri'),
     config = require('../../config.json');
 
@@ -26,7 +25,7 @@ var options = {
 
 router.use(function (req, res, next) {
 
-    deviceModel = conn.model(runOptions.options.realm, Device.schema, runOptions.options.realm + '.devices');
+    installation = new Installation(conn, runOptions.options.realm + '.installation');
     next();
 
 });
@@ -35,27 +34,25 @@ router.route('/:id')
 
     .get(function (req, res, next) {
 
-        deviceModel.findOne({id: req.params.id}, function (err, device) {
+        installation.getInstallation(req.params.id, function (err, data) {
             if (err) {
                 next(err);
             } else {
-                res.json(device);
+                res.json(data);
             }
         });
     })
 
     .put(function (req, res, next) {
 
-        var device = req.body;
-        device.updatedAt.date = moment();
-        device.updatedAt.user = runOptions.options.currentUser;
+        var thisInstallation = req.body;
 
-        deviceModel.findOneAndUpdate({id: req.params.id}, device, function (err, device) {
+        installation.updateInstallation(req.params.id, runOptions.options.currentUser, thisInstallation, function (err) {
 
             if (err) {
                 next(err);
             } else {
-                res.json({ message: 'Device ' + device.name + ' updated' });
+                res.json({ message: 'Installation ' + thisInstallation.name + ' updated' });
             }
 
         });
@@ -63,29 +60,38 @@ router.route('/:id')
 
     .delete(function (req, res, next) {
 
-        deviceModel.findOneAndRemove({id: req.params.id}, function (err, device) {
+        installation.removeInstallation(req.params.id, function (err) {
             if (err) {
                 next(err);
             } else {
-                res.json({ message: 'Successfully deleted' + device.name });
+                res.json({ message: 'Successfully deleted installation: ' + req.params.id});
             }
         });
+    });
+
+router.route('/device/:id')
+
+    .get(function (req, res, next) {
+
+        installation.getDevice(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
     });
 
 router.route('/')
 
     .post(function (req, res, next) {
 
-        var device = new deviceModel(req.body);
-
-        device.updatedAt.date = moment();
-        device.updatedAt.user = runOptions.options.currentUser;
-
-        device.save(function (err) {
+        installation.createInstallation(req.body, runOptions.options.currentUser, function (err, data) {
             if (err) {
                 next(err);
             } else {
-                res.json({ message: 'Device ' + device.name + ' created' });
+                res.json({ message: 'Device ' + data.name + ' created' });
             }
         });
 
@@ -93,11 +99,11 @@ router.route('/')
 
     .get(function (req, res, next) {
 
-        deviceModel.find(function (err, devices) {
+        installation.allInstallations(function (err, data) {
             if (err) {
                 next(err);
             } else {
-                res.json(devices);
+                res.json(data);
             }
         });
 

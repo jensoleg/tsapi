@@ -55,6 +55,11 @@
       "from": "debug@0.7.4",
       "resolved": "https://registry.npmjs.org/debug/-/debug-0.7.4.tgz"
     },
+    "devices": {
+      "version": "1.0.0",
+      "from": "git+https://github.com/jensoleg/devices.git",
+      "resolved": "git+https://github.com/jensoleg/devices.git#942374cdfd8c465de9508c9a3ea81408a5578b90"
+    },
     "express": {
       "version": "4.8.4",
       "from": "express@4.8.4",
@@ -388,7 +393,7 @@
     "mongoose-ts": {
       "version": "0.0.3",
       "from": "git://github.com/jensoleg/mongoose-timeseries",
-      "resolved": "git://github.com/jensoleg/mongoose-timeseries#becac2b1b05486fa2f92cc6e2261b871d16d687c",
+      "resolved": "git://github.com/jensoleg/mongoose-timeseries#bc7813bec72003c5c0766c4c0907f14348ad4166",
       "dependencies": {
         "underscore": {
           "version": "1.6.0",

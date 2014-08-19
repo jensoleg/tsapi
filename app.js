@@ -8,10 +8,10 @@ var express = require('express'),
     config = require('./config.json'),
     mqttHttpBridge = require('./app/routes/mqtt.http.routes'),
     searchApi = require('./app/routes/timeseries.routes'),
-    devicesApi = require('./app/routes/devices.routes'),
     auth0Api = require('./app/routes/auth0.api.routes'),
     electricImp = require('./app/routes/electricimp.routes'),
     authentication = require('./app/routes/authentication.auth0.routes'),
+    installationsAPI = require('./app/routes/installations.routes'),
     route = require('./app/routes/route'),
     runOptions = require('./app/options');
 
@@ -81,8 +81,9 @@ app.use('/', route.router)
     .use('/api/agent', electricImp.router)
     .use('/api/broker', mqttHttpBridge.router)
     .use('/api/datastreams', searchApi.router)
-    .use('/api/devices', devicesApi.router)
-    .use('/api/auth', auth0Api.router);
+    .use('/api/auth', auth0Api.router)
+    .use('/api/installations', installationsAPI.router);
+
 
 // Error handler ....
 app.use(function (err, req, res, next) {

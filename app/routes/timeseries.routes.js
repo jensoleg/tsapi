@@ -110,13 +110,7 @@ router.route('/*')
             mts = new MTS(TSconnection, collName, {interval: 1, verbose: config.tsstore.verbose});
             cache.set(collName, mts);
         }
-/*
-        console.log(moment(_request.from).format());
-        console.log(moment(_request.to).format());
 
-        console.log(moment.utc(_request.from).format());
-        console.log(moment.utc(_request.to).format());
-*/
         mts.findData(_request,
             function (error, data) {
                 if (error) {
