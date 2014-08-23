@@ -81,7 +81,7 @@ router.route('/*')
 
         // limit: default is 100 - max 1000
         if (req.query.limit !== undefined) {
-            if (req.query.limit < 1 || req.query.limit > 1000) {
+            if (req.query.limit < 1 || req.query.limit > 2000) {
                 return next(new Error('Invalid limit - must be in range 1-1000'));
             } else {
                 _request.limit = parseInt(req.query.limit);
