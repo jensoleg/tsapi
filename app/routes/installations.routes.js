@@ -69,6 +69,20 @@ router.route('/:id')
         });
     });
 
+router.route('/:id/device')
+
+    .post(function (req, res, next) {
+
+        installation.newDevice(req.params.id, req.body, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
 router.route('/device/:id')
 
     .get(function (req, res, next) {
@@ -81,7 +95,36 @@ router.route('/device/:id')
             }
         });
 
+    })
+
+    .delete(function (req, res, next) {
+
+        installation.removeDevice(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .put(function (req, res, next) {
+
+        var thisDevice = req.body;
+
+        installation.updateDevice(req.params.id, thisDevice, function (err, data) {
+
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+
+        });
+
     });
+
 
 router.route('/')
 
@@ -91,7 +134,7 @@ router.route('/')
             if (err) {
                 next(err);
             } else {
-                res.json({ message: 'Device ' + data.name + ' created' });
+                res.json(data);
             }
         });
 
