@@ -183,6 +183,63 @@ router.route('/control/:id')
 
     });
 
+router.route('/device/:id/trigger')
+
+    .post(function (req, res, next) {
+
+        installation.newTrigger(req.params.id, req.body, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
+router.route('/trigger/:id')
+
+
+    .get(function (req, res, next) {
+
+        installation.getTrigger(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .delete(function (req, res, next) {
+
+        installation.removeTrigger(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .put(function (req, res, next) {
+
+        var thisTrigger = req.body;
+
+        installation.updateTrigger(req.params.id, thisTrigger, function (err, data) {
+
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+
+        });
+
+    });
+
 router.route('/')
 
     .post(function (req, res, next) {
