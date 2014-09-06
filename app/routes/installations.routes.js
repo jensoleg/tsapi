@@ -126,6 +126,63 @@ router.route('/device/:id')
     });
 
 
+router.route('/device/:id/control')
+
+    .post(function (req, res, next) {
+
+        installation.newControl(req.params.id, req.body, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
+router.route('/control/:id')
+
+
+    .get(function (req, res, next) {
+
+        installation.getControl(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .delete(function (req, res, next) {
+
+        installation.removeControl(req.params.id, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .put(function (req, res, next) {
+
+        var thisControl = req.body;
+
+        installation.updateControl(req.params.id, thisControl, function (err, data) {
+
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+
+        });
+
+    });
+
 router.route('/')
 
     .post(function (req, res, next) {
