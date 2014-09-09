@@ -69,7 +69,7 @@ router.route('/:id')
         });
     });
 
-router.route('/:id/device')
+router.route('/:id/devices')
 
     .post(function (req, res, next) {
 
@@ -83,11 +83,11 @@ router.route('/:id/device')
 
     });
 
-router.route('/device/:id')
+router.route('/:id/devices/:deviceid')
 
     .get(function (req, res, next) {
 
-        installation.getDevice(req.params.id, function (err, data) {
+        installation.getDevice(req.params.id, req.params.deviceid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -99,7 +99,7 @@ router.route('/device/:id')
 
     .delete(function (req, res, next) {
 
-        installation.removeDevice(req.params.id, function (err, data) {
+        installation.removeDevice(req.params.id, req.params.deviceid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -113,7 +113,7 @@ router.route('/device/:id')
 
         var thisDevice = req.body;
 
-        installation.updateDevice(req.params.id, thisDevice, function (err, data) {
+        installation.updateDevice(req.params.id, req.params.deviceid, thisDevice, function (err, data) {
 
             if (err) {
                 next(err);
@@ -126,11 +126,11 @@ router.route('/device/:id')
     });
 
 
-router.route('/device/:id/control')
+router.route('/:id/devices/:deviceid/controls')
 
     .post(function (req, res, next) {
 
-        installation.newControl(req.params.id, req.body, function (err, data) {
+        installation.newControl(req.params.id, req.params.deviceid, req.body, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -140,12 +140,11 @@ router.route('/device/:id/control')
 
     });
 
-router.route('/control/:id')
-
+router.route('/:id/devices/:deviceid/controls/:controlid')
 
     .get(function (req, res, next) {
 
-        installation.getControl(req.params.id, function (err, data) {
+        installation.getControl(req.params.id, req.params.deviceid, req.params.controlid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -157,7 +156,7 @@ router.route('/control/:id')
 
     .delete(function (req, res, next) {
 
-        installation.removeControl(req.params.id, function (err, data) {
+        installation.removeControl(req.params.id, req.params.deviceid, req.params.controlid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -171,7 +170,7 @@ router.route('/control/:id')
 
         var thisControl = req.body;
 
-        installation.updateControl(req.params.id, thisControl, function (err, data) {
+        installation.updateControl(req.params.id, req.params.deviceid, req.params.controlid, thisControl, function (err, data) {
 
             if (err) {
                 next(err);
@@ -183,11 +182,11 @@ router.route('/control/:id')
 
     });
 
-router.route('/device/:id/trigger')
+router.route('/:id/devices/:deviceid/triggers')
 
     .post(function (req, res, next) {
 
-        installation.newTrigger(req.params.id, req.body, function (err, data) {
+        installation.newTrigger(req.params.id, req.params.deviceid, req.body, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -197,12 +196,11 @@ router.route('/device/:id/trigger')
 
     });
 
-router.route('/trigger/:id')
-
+router.route('/:id/devices/:deviceid/triggers/:triggerid')
 
     .get(function (req, res, next) {
 
-        installation.getTrigger(req.params.id, function (err, data) {
+        installation.getTrigger(req.params.id, req.params.deviceid, req.params.triggerid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -214,7 +212,7 @@ router.route('/trigger/:id')
 
     .delete(function (req, res, next) {
 
-        installation.removeTrigger(req.params.id, function (err, data) {
+        installation.removeTrigger(req.params.id, req.params.deviceid, req.params.triggerid, function (err, data) {
             if (err) {
                 next(err);
             } else {
@@ -228,7 +226,111 @@ router.route('/trigger/:id')
 
         var thisTrigger = req.body;
 
-        installation.updateTrigger(req.params.id, thisTrigger, function (err, data) {
+        installation.updateTrigger(req.params.id, req.params.deviceid, req.params.triggerid, thisTrigger, function (err, data) {
+
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+
+        });
+
+    });
+
+
+/* requests */
+
+
+router.route('/:id/devices/:deviceid/triggers/:triggerid/requests/:requestid')
+
+
+    .get(function (req, res, next) {
+
+        installation.getRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .delete(function (req, res, next) {
+
+        installation.removeRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .put(function (req, res, next) {
+
+        var thisControl = req.body;
+
+        installation.updateRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, thisControl, function (err, data) {
+
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+
+        });
+
+    });
+
+router.route('/:id/devices/:deviceid/triggers/:triggerid/requests')
+
+    .post(function (req, res, next) {
+
+        installation.newRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.body, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
+router.route('/:id/devices/:deviceid/triggers/:triggerid/requests/requestid')
+
+
+    .get(function (req, res, next) {
+
+        installation.getRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .delete(function (req, res, next) {
+
+        installation.removeRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    })
+
+    .put(function (req, res, next) {
+
+        var thisRequest = req.body;
+
+        installation.updateRequest(req.params.id, req.params.deviceid, req.params.triggerid, req.params.requestid, thisRequest, function (err, data) {
 
             if (err) {
                 next(err);
