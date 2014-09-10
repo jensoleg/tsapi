@@ -12,6 +12,7 @@ var express = require('express'),
     electricImp = require('./app/routes/electricimp.routes'),
     authentication = require('./app/routes/authentication.auth0.routes'),
     installationsAPI = require('./app/routes/installations.routes'),
+    requester = require('./app/routes/request.routes'),
     route = require('./app/routes/route'),
     runOptions = require('./app/options');
 
@@ -82,7 +83,8 @@ app.use('/', route.router)
     .use('/api/broker', mqttHttpBridge.router)
     .use('/api/datastreams', searchApi.router)
     .use('/api/auth', auth0Api.router)
-    .use('/api/installations', installationsAPI.router);
+    .use('/api/installations', installationsAPI.router)
+    .use('/api/requests', requester.router);
 
 
 // Error handler ....
