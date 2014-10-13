@@ -3,7 +3,8 @@
 var express = require('express'),
     router = express.Router(),
     request = require('request'),
-    runOptions = require('../options');
+    runOptions = require('../options'),
+    config = require('../../config.json');
 
 var auth0API = {
     url: undefined,
@@ -18,7 +19,7 @@ router.route('/*')
 
     .all(function (req, res, next) {
 
-        auth0API.url = 'https://' + runOptions.options.realm + '.auth0.com' + req.url;
+        auth0API.url = config.domains[runOptions.options.realm].endpoint + req.url;
         auth0API.method = req.method;
         if (req.headers.authorization) {
             auth0API.headers.Authorization = req.headers.authorization;

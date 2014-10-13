@@ -33,7 +33,11 @@ app.use(bodyParser.urlencoded({
 
 app.all('*', function (req, res, next) {
 
-    runOptions.set({realm: req.headers.realm});
+    if (req.headers.realm !== undefined) {
+        runOptions.set({realm: req.headers.realm});
+    } else {
+        runOptions.set({realm: 'local'});
+    }
     next();
 
 });
@@ -61,8 +65,16 @@ app.use('*', function (req, res, next) {
     var realm = runOptions.options.realm,
         secret = config.domains[realm].clientSecret,
         clientId = config.domains[realm].clientId,
-        token_str = req.headers.authorization.split(" "),
-        token = token_str[1];
+        token_str = '',
+        token = '';
+
+
+    if (req.headers.authorization) {
+        token_str = req.headers.authorization.split(" ");
+        token = token_str[1]
+    } else {
+        return next(new Error('Authorization header is missing'));
+    }
 
     jwt.verify(token, new Buffer(secret, 'base64'), { audience: clientId }, function (err, decoded) {
         if (err) {

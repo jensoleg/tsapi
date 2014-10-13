@@ -18,7 +18,6 @@ var express = require('express'),
             return n * 2;
         },
         dispose: function (key, n) {
-
         },
         maxAge: 1000 * 60 * 60
     },

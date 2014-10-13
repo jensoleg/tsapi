@@ -49,7 +49,7 @@ router.use(function (req, res, next) {
 router.use(function (req, res, next) {
 
     if (!token.exp) {
-        auth0Token.url = 'https://' + runOptions.options.realm + '.auth0.com/oauth/token';
+        auth0Token.url = config.domains[runOptions.options.realm].endpoint + '/oauth/token';
         auth0Token.body.client_id = config.domains[runOptions.options.realm].clientId;
         auth0Token.body.client_secret = config.domains[runOptions.options.realm].clientSecret;
 
@@ -69,7 +69,7 @@ router.route('/*')
 
     .all(function (req, res, next) {
 
-        auth0API.url = 'https://' + runOptions.options.realm + '.auth0.com/api' + req.url;
+        auth0API.url = config.domains[runOptions.options.realm].endpoint + '/api' + req.url;
         auth0API.headers.Authorization = token.token_type + ' ' + token.access_token;
         auth0API.method = req.method;
         auth0API.body = req.body;
