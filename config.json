@@ -5,13 +5,13 @@
         "port": 1883
     },
     "tsstore": {
-        "dbURI": "mongodb://localhost/",
-        "db": "timeseries",
+        "dbURI": "mongodb://mqtt:mqtt@ds051841.mongolab.com:51841/",
+        "db": "bobbytech",
         "verbose": false
     },
     "bobby": {
-        "dbURI": "mongodb://localhost/",
-        "db": "bobby",
+        "dbURI": "mongodb://mqtt:mqtt@ds051841.mongolab.com:51841/",
+        "db": "bobbytech",
         "verbose": false
     },
     "domains": {
