@@ -7,7 +7,7 @@ MAINTAINER Jens-Ole Graulund <jensole@graulund.net>
 
 RUN npm install -g pm2@0.12.10
 
-EXPOSE 8080
+EXPOSE 8081
 
 ADD start.sh /tmp/
 
