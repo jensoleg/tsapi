@@ -1,5 +1,5 @@
 # BUILD image: docker build -t jensoleg/tsapi .
-# Run with docker run -e "APP=app.js" -p 8081:8081 ...
+# Run with docker run --name tsapi -e "APP=app.js" -p 8081:8081 ...
 
 FROM node:0.12.2
 
