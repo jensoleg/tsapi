@@ -19,8 +19,8 @@
             "endpoint": "https://senodio.eu.auth0.com",
             "clientSecret": "H-FNUr4n1iwhNfiHxsYxsVEnJKQiWrRqG4_pWYdyhBl030Ef0D_9WPYcTuCQFoYR",
             "clientId": "RAoAYmpefM2KZ4KFERmTxt2mam09ke6p",
-            "user": "contact@bobbytechnologies.dk",
-            "pass": "tekno"
+            "user": "jensole.graulund@senodio.com",
+            "pass": "z7senodio"
         },
         "local": {
             "endpoint": "https://development.auth0.com",
