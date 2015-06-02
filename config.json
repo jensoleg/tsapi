@@ -1,7 +1,7 @@
 {
     "port": 8081,
     "mqtt": {
-        "host": "localhost",
+        "host": "mqtt.senodio.com",
         "port": 1883
     },
     "tsstore": {
