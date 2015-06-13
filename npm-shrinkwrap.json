@@ -102,7 +102,7 @@
     "devices": {
       "version": "1.0.1",
       "from": "git+https://github.com/jensoleg/devices.git",
-      "resolved": "git+https://github.com/jensoleg/devices.git#c76a2b728e57ca4cc17455f05b9290ad800cb196"
+      "resolved": "git+https://github.com/jensoleg/devices.git#9ee2e13ccbcc608402e85626450511bf28c850c9"
     },
     "express": {
       "version": "4.12.4",
