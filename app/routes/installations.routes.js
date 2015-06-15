@@ -30,6 +30,21 @@ router.use(function (req, res, next) {
 
 });
 
+
+router.route('/allTriggers')
+
+    .get(function (req, res, next) {
+
+        installation.allTrigger(function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
 router.route('/:id')
 
     .get(function (req, res, next) {
@@ -182,19 +197,6 @@ router.route('/:id/devices/:deviceid/controls/:controlid')
 
     });
 
-router.route('/triggers')
-
-    .get(function (req, res, next) {
-
-        installation.allTriggers(function (err, data) {
-            if (err) {
-                next(err);
-            } else {
-                res.json(data);
-            }
-        });
-
-    });
 
 router.route('/:id/devices/:deviceid/triggers')
 
@@ -381,6 +383,5 @@ router.route('/')
         });
 
     });
-
 
 module.exports.router = router;
