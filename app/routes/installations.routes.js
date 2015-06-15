@@ -182,6 +182,20 @@ router.route('/:id/devices/:deviceid/controls/:controlid')
 
     });
 
+router.route('/triggers')
+
+    .get(function (req, res, next) {
+
+        installation.allTriggers(function (err, data) {
+            if (err) {
+                next(err);
+            } else {
+                res.json(data);
+            }
+        });
+
+    });
+
 router.route('/:id/devices/:deviceid/triggers')
 
     .post(function (req, res, next) {
