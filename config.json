@@ -7,7 +7,7 @@
     "tsstore": {
         "dbURI": "mongodb://mqtt:mqtt@ds051841.mongolab.com:51841/",
         "db": "bobbytech",
-        "verbose": false
+        "verbose": true
     },
     "bobby": {
         "dbURI": "mongodb://mqtt:mqtt@ds051841.mongolab.com:51841/",

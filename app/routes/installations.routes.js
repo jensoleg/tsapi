@@ -19,7 +19,7 @@ var options = {
         }
     },
 
-    mongodbUri = config.bobby.dbURI + config.bobby.db,
+    mongodbUri = config.bobby.dbURI + config.bobby.db + "?authMechanism=SCRAM-SHA-1",
     mongooseUri = uriUtil.formatMongoose(mongodbUri),
     conn = mongoose.createConnection(mongooseUri, options);
 

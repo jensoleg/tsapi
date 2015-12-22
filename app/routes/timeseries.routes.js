@@ -32,7 +32,7 @@ var options = {
     }
 };
 
-var mongodbTSUri = config.tsstore.dbURI + config.tsstore.db,
+var mongodbTSUri = config.tsstore.dbURI + config.tsstore.db + "?authMechanism=SCRAM-SHA-1",
     mongooseTSUri = uriUtil.formatMongoose(mongodbTSUri),
     TSconnection = mongoose.createConnection(mongooseTSUri, options);
 
